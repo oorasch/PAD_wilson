@@ -1,0 +1,12 @@
+#ifndef FILE_RANGEN
+#define FILE_RANGEN
+
+#include <random>
+#include <chrono>
+
+
+//Forward definitions
+const unsigned seed;
+std::ranlux48 generator;
+
+#endif

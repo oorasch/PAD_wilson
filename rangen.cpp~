@@ -1,0 +1,8 @@
+#include "rangen.h"
+
+namespace rangen{
+
+extern const unsigned seed(std::chrono::system_clock::now().time_since_epoch().count());
+extern std::ranlux48 generator(seed);
+
+}

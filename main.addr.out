@@ -1,0 +1,483 @@
+==2417== Memcheck, a memory error detector
+==2417== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==2417== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==2417== Command: ./main
+==2417== Parent PID: 2416
+==2417== 
+--2417-- 
+--2417-- Valgrind options:
+--2417--    -v
+--2417--    --leak-check=yes
+--2417--    --tool=memcheck
+--2417--    --undef-value-errors=yes
+--2417--    --track-origins=yes
+--2417--    --log-file=main.addr.out
+--2417--    --show-reachable=yes
+--2417-- Contents of /proc/version:
+--2417--   Linux version 4.4.0-116-generic (buildd@lcy01-amd64-023) (gcc version 4.8.4 (Ubuntu 4.8.4-2ubuntu1~14.04.4) ) #140~14.04.1-Ubuntu SMP Fri Feb 16 09:25:20 UTC 2018
+--2417-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
+--2417-- Page sizes: currently 4096, max supported 4096
+--2417-- Valgrind library directory: /usr/lib/valgrind
+--2417-- Reading syms from /home/olo/DissProj_1/PAD_msm/main
+--2417-- Reading syms from /lib/x86_64-linux-gnu/ld-2.19.so
+--2417--   Considering /lib/x86_64-linux-gnu/ld-2.19.so ..
+--2417--   .. CRC mismatch (computed c0e20d20 wanted 6a260d6d)
+--2417--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.19.so ..
+--2417--   .. CRC is valid
+--2417-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
+--2417--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
+--2417--   .. CRC mismatch (computed fed8e6c5 wanted e6be554a)
+--2417--    object doesn't have a symbol table
+--2417--    object doesn't have a dynamic symbol table
+--2417-- Scheduler: using generic scheduler lock implementation.
+--2417-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==2417== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-2417-by-olo-on-???
+==2417== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-2417-by-olo-on-???
+==2417== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-2417-by-olo-on-???
+==2417== 
+==2417== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==2417== don't want to do, unless you know exactly what you're doing,
+==2417== or are doing some strange experiment):
+==2417==   /usr/lib/valgrind/../../bin/vgdb --pid=2417 ...command...
+==2417== 
+==2417== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==2417==   /path/to/gdb ./main
+==2417== and then give GDB the following command
+==2417==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=2417
+==2417== --pid is optional if only one valgrind process is running
+==2417== 
+--2417-- REDIR: 0x4019d70 (ld-linux-x86-64.so.2:strlen) redirected to 0x380764b1 (???)
+--2417-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--2417--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
+--2417--   .. CRC mismatch (computed 4bcdfe99 wanted 3143e841)
+--2417--    object doesn't have a symbol table
+--2417-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+--2417--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
+--2417--   .. CRC mismatch (computed 3df18bf1 wanted 14fefe1c)
+--2417--    object doesn't have a symbol table
+==2417== WARNING: new redirection conflicts with existing -- ignoring it
+--2417--     old: 0x04019d70 (strlen              ) R-> (0000.0) 0x380764b1 ???
+--2417--     new: 0x04019d70 (strlen              ) R-> (2007.0) 0x04c2e1a0 strlen
+--2417-- REDIR: 0x4019b20 (ld-linux-x86-64.so.2:index) redirected to 0x4c2dd50 (index)
+--2417-- REDIR: 0x4019d40 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c2f2f0 (strcmp)
+--2417-- REDIR: 0x401aa90 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c31da0 (mempcpy)
+--2417-- Reading syms from /usr/lib/libgsl.so.0.17.0
+--2417--   Considering /usr/lib/libgsl.so.0.17.0 ..
+--2417--   .. CRC mismatch (computed 4cbdfc59 wanted 1ad3e952)
+--2417--    object doesn't have a symbol table
+--2417-- Reading syms from /usr/lib/libgslcblas.so.0.0.0
+--2417--   Considering /usr/lib/libgslcblas.so.0.0.0 ..
+--2417--   .. CRC mismatch (computed cb28a30b wanted acac65e6)
+--2417--    object doesn't have a symbol table
+--2417-- Reading syms from /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24
+--2417--    object doesn't have a symbol table
+--2417-- Reading syms from /lib/x86_64-linux-gnu/libm-2.19.so
+--2417--   Considering /lib/x86_64-linux-gnu/libm-2.19.so ..
+--2417--   .. CRC mismatch (computed 0511ff25 wanted e2dba104)
+--2417--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libm-2.19.so ..
+--2417--   .. CRC is valid
+--2417-- Reading syms from /lib/x86_64-linux-gnu/libgcc_s.so.1
+--2417--    object doesn't have a symbol table
+--2417-- Reading syms from /lib/x86_64-linux-gnu/libc-2.19.so
+--2417--   Considering /lib/x86_64-linux-gnu/libc-2.19.so ..
+--2417--   .. CRC mismatch (computed 26a92edf wanted 7a008b73)
+--2417--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.19.so ..
+--2417--   .. CRC is valid
+--2417-- REDIR: 0x5da0070 (libc.so.6:strcasecmp) redirected to 0x4a25720 (_vgnU_ifunc_wrapper)
+--2417-- REDIR: 0x5da2360 (libc.so.6:strncasecmp) redirected to 0x4a25720 (_vgnU_ifunc_wrapper)
+--2417-- REDIR: 0x5d9f840 (libc.so.6:memcpy@GLIBC_2.2.5) redirected to 0x4a25720 (_vgnU_ifunc_wrapper)
+--2417-- REDIR: 0x5d9dad0 (libc.so.6:rindex) redirected to 0x4c2da30 (rindex)
+--2417-- REDIR: 0x5d95a80 (libc.so.6:malloc) redirected to 0x4c2ab10 (malloc)
+--2417-- REDIR: 0x5d9bdd0 (libc.so.6:strlen) redirected to 0x4c2e0e0 (strlen)
+--2417-- REDIR: 0x5d9f2b0 (libc.so.6:__GI_memcmp) redirected to 0x4c30b80 (__GI_memcmp)
+--2417-- REDIR: 0x5d9a380 (libc.so.6:strcmp) redirected to 0x4a25720 (_vgnU_ifunc_wrapper)
+--2417-- REDIR: 0x5e56a80 (libc.so.6:__strcmp_ssse3) redirected to 0x4c2f1b0 (strcmp)
+--2417-- REDIR: 0x554d910 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4c2b070 (operator new(unsigned long))
+--2417-- REDIR: 0x5e66910 (libc.so.6:__memmove_ssse3_back) redirected to 0x4c2f450 (memcpy@GLIBC_2.2.5)
+--2417-- REDIR: 0x554b9e0 (libstdc++.so.6:operator delete(void*)) redirected to 0x4c2c250 (operator delete(void*))
+--2417-- REDIR: 0x5d9f8d0 (libc.so.6:memset) redirected to 0x4c31350 (memset)
+--2417-- REDIR: 0x5d9e720 (libc.so.6:__GI_strstr) redirected to 0x4c32030 (__strstr_sse2)
+--2417-- REDIR: 0x554d9d0 (libstdc++.so.6:operator new[](unsigned long)) redirected to 0x4c2b790 (operator new[](unsigned long))
+--2417-- REDIR: 0x5d9f270 (libc.so.6:bcmp) redirected to 0x4a25720 (_vgnU_ifunc_wrapper)
+--2417-- REDIR: 0x5e768e0 (libc.so.6:__memcmp_sse4_1) redirected to 0x4c30c00 (__memcmp_sse4_1)
+--2417-- REDIR: 0x5da4a40 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x4a25720 (_vgnU_ifunc_wrapper)
+--2417-- REDIR: 0x5dada30 (libc.so.6:__memcpy_sse2_unaligned) redirected to 0x4c2f6b0 (memcpy@@GLIBC_2.14)
+--2417-- REDIR: 0x5da6dd0 (libc.so.6:strchrnul) redirected to 0x4c319b0 (strchrnul)
+--2417-- REDIR: 0x5d9ef20 (libc.so.6:memchr) redirected to 0x4c2f390 (memchr)
+--2417-- REDIR: 0x554ba10 (libstdc++.so.6:operator delete[](void*)) redirected to 0x4c2c7d0 (operator delete[](void*))
+--2417-- REDIR: 0x5d96120 (libc.so.6:free) redirected to 0x4c2bd80 (free)
+==2417== 
+==2417== HEAP SUMMARY:
+==2417==     in use at exit: 6,658,688 bytes in 91,473 blocks
+==2417==   total heap usage: 134,146 allocs, 42,673 frees, 31,183,904 bytes allocated
+==2417== 
+==2417== Searching for pointers to 91,473 not-freed blocks
+==2417== Checked 187,864 bytes
+==2417== 
+==2417== 128 bytes in 1 blocks are indirectly lost in loss record 1 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4015B5: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 144 (16 direct, 128 indirect) bytes in 1 blocks are definitely lost in loss record 2 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4015B5: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 1,152 bytes in 9 blocks are indirectly lost in loss record 3 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4057E0: loop_exp_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40782A: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x401601: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 1,152 bytes in 9 blocks are indirectly lost in loss record 4 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4069A0: loop_col_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407859: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x401601: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 1,152 bytes in 9 blocks are indirectly lost in loss record 5 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4067AC: loop_col_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407859: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x401601: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 1,296 (144 direct, 1,152 indirect) bytes in 9 blocks are definitely lost in loss record 6 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4057E0: loop_exp_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40782A: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x401601: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 1,296 (144 direct, 1,152 indirect) bytes in 9 blocks are definitely lost in loss record 7 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4069A0: loop_col_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407859: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x401601: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 1,296 (144 direct, 1,152 indirect) bytes in 9 blocks are definitely lost in loss record 8 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4067AC: loop_col_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407859: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x401601: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 1,408 bytes in 11 blocks are indirectly lost in loss record 9 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4055F2: loop_exp_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40782A: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x401601: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 1,584 (176 direct, 1,408 indirect) bytes in 11 blocks are definitely lost in loss record 10 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4055F2: loop_exp_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40782A: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x401601: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 2,432 bytes in 19 blocks are indirectly lost in loss record 11 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4053F5: loop_exp_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40782A: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x401601: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 2,432 bytes in 19 blocks are indirectly lost in loss record 12 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x405B11: loop_exp_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40782A: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x401601: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 2,736 (304 direct, 2,432 indirect) bytes in 19 blocks are definitely lost in loss record 13 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4053F5: loop_exp_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40782A: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x401601: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 2,736 (304 direct, 2,432 indirect) bytes in 19 blocks are definitely lost in loss record 14 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x405B11: loop_exp_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40782A: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x401601: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 5,888 bytes in 46 blocks are indirectly lost in loss record 15 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4045C4: plaquette_ins_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40774F: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x401601: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 6,624 (736 direct, 5,888 indirect) bytes in 46 blocks are definitely lost in loss record 16 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4045C4: plaquette_ins_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40774F: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x401601: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 40,960 bytes in 320 blocks are indirectly lost in loss record 17 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407C3E: do_sigma_update(int const (*) [4], std::vector<int, std::allocator<int> >, double, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407F93: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x401601: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 46,080 (5,120 direct, 40,960 indirect) bytes in 320 blocks are definitely lost in loss record 18 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407C3E: do_sigma_update(int const (*) [4], std::vector<int, std::allocator<int> >, double, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407F93: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x401601: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 48,000 bytes in 375 blocks are indirectly lost in loss record 19 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4067AC: loop_col_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407859: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 48,256 bytes in 377 blocks are indirectly lost in loss record 20 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40659C: loop_col_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407859: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 48,768 bytes in 381 blocks are indirectly lost in loss record 21 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x406CCF: loop_col_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407859: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 54,000 (6,000 direct, 48,000 indirect) bytes in 375 blocks are definitely lost in loss record 22 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4067AC: loop_col_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407859: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 54,144 bytes in 423 blocks are indirectly lost in loss record 23 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4069A0: loop_col_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407859: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 54,288 (6,032 direct, 48,256 indirect) bytes in 377 blocks are definitely lost in loss record 24 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40659C: loop_col_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407859: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 54,864 (6,096 direct, 48,768 indirect) bytes in 381 blocks are definitely lost in loss record 25 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x406CCF: loop_col_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407859: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 60,912 (6,768 direct, 54,144 indirect) bytes in 423 blocks are definitely lost in loss record 26 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4069A0: loop_col_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407859: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 72,704 bytes in 1 blocks are still reachable in loss record 27 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x5549BD5: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==2417==    by 0x40101D9: call_init.part.0 (dl-init.c:78)
+==2417==    by 0x40102C2: call_init (dl-init.c:36)
+==2417==    by 0x40102C2: _dl_init (dl-init.c:126)
+==2417==    by 0x4001299: ??? (in /lib/x86_64-linux-gnu/ld-2.19.so)
+==2417== 
+==2417== 85,248 bytes in 666 blocks are indirectly lost in loss record 28 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x404CFF: plaquette_del_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4077F6: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 95,904 (10,656 direct, 85,248 indirect) bytes in 666 blocks are definitely lost in loss record 29 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x404CFF: plaquette_del_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4077F6: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 117,120 bytes in 915 blocks are indirectly lost in loss record 30 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x405B11: loop_exp_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40782A: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 121,600 bytes in 950 blocks are indirectly lost in loss record 31 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4057E0: loop_exp_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40782A: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 123,648 bytes in 966 blocks are indirectly lost in loss record 32 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4053F5: loop_exp_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40782A: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 129,792 bytes in 1,014 blocks are indirectly lost in loss record 33 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4055F2: loop_exp_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40782A: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 131,760 (14,640 direct, 117,120 indirect) bytes in 915 blocks are definitely lost in loss record 34 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x405B11: loop_exp_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40782A: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 136,800 (15,200 direct, 121,600 indirect) bytes in 950 blocks are definitely lost in loss record 35 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4057E0: loop_exp_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40782A: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 139,104 (15,456 direct, 123,648 indirect) bytes in 966 blocks are definitely lost in loss record 36 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4053F5: loop_exp_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40782A: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 146,016 (16,224 direct, 129,792 indirect) bytes in 1,014 blocks are definitely lost in loss record 37 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4055F2: loop_exp_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40782A: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 515,328 bytes in 4,026 blocks are indirectly lost in loss record 38 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4045C4: plaquette_ins_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40774F: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 579,744 (64,416 direct, 515,328 indirect) bytes in 4,026 blocks are definitely lost in loss record 39 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x4045C4: plaquette_ins_update(int const (*) [4], std::vector<int, std::allocator<int> > const&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > const&, double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40774F: do_loop_updates(int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407ECD: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 4,505,600 bytes in 35,200 blocks are indirectly lost in loss record 40 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BEC: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407C3E: do_sigma_update(int const (*) [4], std::vector<int, std::allocator<int> >, double, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407F93: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== 5,068,800 (563,200 direct, 4,505,600 indirect) bytes in 35,200 blocks are definitely lost in loss record 41 of 41
+==2417==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2417==    by 0x4F65BD7: gsl_permutation_alloc (in /usr/lib/libgsl.so.0.17.0)
+==2417==    by 0x4038B2: ln_det(int const&, std::vector<double, std::allocator<double> >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407C3E: do_sigma_update(int const (*) [4], std::vector<int, std::allocator<int> >, double, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x407F93: do_updates(int, int const (*) [4], double&, std::vector<int, std::allocator<int> >&, std::vector<int, std::allocator<int> >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&) (in /home/olo/DissProj_1/PAD_msm/main)
+==2417==    by 0x40175C: main (in /home/olo/DissProj_1/PAD_msm/main)
+==2417== 
+==2417== LEAK SUMMARY:
+==2417==    definitely lost: 731,776 bytes in 45,736 blocks
+==2417==    indirectly lost: 5,854,208 bytes in 45,736 blocks
+==2417==      possibly lost: 0 bytes in 0 blocks
+==2417==    still reachable: 72,704 bytes in 1 blocks
+==2417==         suppressed: 0 bytes in 0 blocks
+==2417== 
+==2417== ERROR SUMMARY: 20 errors from 20 contexts (suppressed: 0 from 0)
+==2417== ERROR SUMMARY: 20 errors from 20 contexts (suppressed: 0 from 0)
