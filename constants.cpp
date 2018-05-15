@@ -6,6 +6,7 @@ namespace constants
     //global constants
     extern const double pi(3.14159265359);
     extern const double ln2(0.69314718056);
+    extern const int neibs(4);
     
     /*################################################################*/
     //Simulation parameters

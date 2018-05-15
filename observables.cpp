@@ -6,7 +6,7 @@
 
 using namespace std;
 
-double meas_plaq_occ(const vector<int>& plaq_occ, const vector<double>& I_bessel)
+double meas_plaq_occ(const vector<int>& plaq_occ)
 {
 	int tmp = 0;
 

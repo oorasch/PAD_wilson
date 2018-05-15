@@ -1,7 +1,7 @@
 #ifndef FILE_OBSERVABLES
 #define FILE_OBSERVABLES
 
-double meas_plaq_occ(const std::vector<int>& plaq_occ, const std::vector<double>& I_bessel);
+double meas_plaq_occ(const std::vector<int>& plaq_occ);
 
 double meas_plaq(const std::vector<int>& plaq_occ, const std::vector<double>& I_bessel);
 

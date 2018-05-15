@@ -22,7 +22,8 @@ using namespace std;
 int main(){
 
 	//Auxiliary arrays
- 	int neib[constants::V][4];		//Neighbour field
+	//const int neibs = 4;
+ 	vector<vector<int>> neib (constants::V, vector<int> (4, 0));	//Neighbour field
 	vector<vector<int>> k_link (constants::V, vector<int> (2, 0)); //link variables for fermion loops
 	vector<vector<int>> sig_link (constants::V, vector<int> (2, 0));	//auxiliary sigma link variables, from Hubbard-Stratonovich-Trafo
 	vector<int> s_site (constants::V, 1); //loop occupation number of sites
@@ -47,13 +48,13 @@ int main(){
 	//cout << detM << endl;
 	
 	ofstream outfile1, outfile2, outfile3;
-	string version("_full1_newexp");
+	string version("_full1_new");
 	outfile1.open("plaq_occ_beta"+version+".dat");
 	outfile2.open("topo_chrg_beta"+version+".dat");
 	outfile3.open("avg_plaq_occ_beta"+version+".dat");
 		
 //	for(double theta_bar = -1.5; theta_bar <= 1.6; theta_bar += 0.05)
-	for(double beta = 0.1; beta <= 2.2; beta += 0.4)
+	for(double beta = 0.1; beta <= 6.2; beta += 0.3)
 	{
 		//constants::theta_bar = theta_bar;
 		constants::beta = beta;
@@ -75,7 +76,7 @@ int main(){
 			//cout << constants::beta << " " << constants::eta << " " << meas_plaq(plaq_occ, I_bessel) << endl;
 			outfile1 << meas_plaq(plaq_occ, I_bessel) << endl;
 			outfile2 << meas_topo_chrg(plaq_occ, I_bessel) << endl;
-			outfile3 << meas_plaq_occ(plaq_occ, I_bessel) << endl;
+			outfile3 << meas_plaq_occ(plaq_occ) << endl;
 		}
 	}
 	outfile1.close(); outfile2.close(); outfile3.close();

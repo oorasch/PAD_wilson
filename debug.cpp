@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void site_occupation_check(const int neib[][4], const vector<int>& s_site, const vector<vector<int>>& k_link)
+void site_occupation_check(const vector<vector<int>>& neib, const vector<int>& s_site, const vector<vector<int>>& k_link)
 {
 	for(int i = 0; i < constants::V; i++)
 	{
@@ -29,7 +29,7 @@ void site_occupation_check(const int neib[][4], const vector<int>& s_site, const
 	}
 }
 
-void pauli_check(const int neib[][4], const vector<vector<int>>& k_link)
+void pauli_check(const vector<vector<int>>& neib, const vector<vector<int>>& k_link)
 {
 	for(int i = 0; i < constants::V; i++)
 	{
@@ -49,7 +49,7 @@ void pauli_check(const int neib[][4], const vector<vector<int>>& k_link)
 }
 
 //check the fermion flux conservation
-void flux_check(const int neib[][4], const vector<vector<int>>& k_link)
+void flux_check(const vector<vector<int>>& neib, const vector<vector<int>>& k_link)
 {
 	for(int i = 0; i < constants::V; i++)
 	{		
@@ -58,7 +58,7 @@ void flux_check(const int neib[][4], const vector<vector<int>>& k_link)
 }
 
 //check if the plaquette occupation numbers add up correctly
-void plaquette_check(const int neib[][4], const vector<vector<int>>& k_link, const vector<int>& plaq_occ)
+void plaquette_check(const vector<vector<int>>& neib, const vector<vector<int>>& k_link, const vector<int>& plaq_occ)
 {
 	for(int i = 0; i < constants::V; i++)
 	{

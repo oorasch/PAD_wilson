@@ -1,6 +1,6 @@
 # Grace project file
 #
-@version 50123
+@version 50125
 @page size 792, 612
 @page scroll 5%
 @page inout 5%
@@ -30,7 +30,6 @@
 @map font 28 to "NimbusSansL-RegularItalic", "NimbusSansL-RegularItalic"
 @map font 29 to "StandardSymbolsL-Regular", "StandardSymbolsL-Regular"
 @map font 12 to "Symbol", "Symbol"
-@map font 31 to "Symbol-Regular", "Symbol-Regular"
 @map font 2 to "Times-Bold", "Times-Bold"
 @map font 3 to "Times-BoldItalic", "Times-BoldItalic"
 @map font 1 to "Times-Italic", "Times-Italic"
@@ -88,7 +87,7 @@
 @timestamp rot 0
 @timestamp font 0
 @timestamp char size 1.000000
-@timestamp def "Mon May  7 15:57:32 2018"
+@timestamp def "Tue May 15 18:06:01 2018"
 @r0 off
 @link r0 to g0
 @r0 type above
@@ -135,7 +134,7 @@
 @g0 fixedpoint format general general
 @g0 fixedpoint prec 6, 6
 @with g0
-@    world 0, 0, 6, 3
+@    world -0.0146896305145, -0.0164164657528, 6.25078865068, 0.968536021124
 @    stack world 0, 0, 0, 0
 @    znorm 1
 @    view 0.107843, 0.084559, 1.275735, 0.980392
@@ -217,7 +216,7 @@
 @    yaxis  label color 1
 @    yaxis  label place normal
 @    yaxis  tick on
-@    yaxis  tick major 0.5
+@    yaxis  tick major 0.2
 @    yaxis  tick minor ticks 1
 @    yaxis  tick default 6
 @    yaxis  tick place rounded true
@@ -257,7 +256,7 @@
 @    altyaxis  off
 @    legend on
 @    legend loctype view
-@    legend 0.7, 0.9
+@    legend 0.7, 0.5
 @    legend box color 1
 @    legend box pattern 1
 @    legend box linewidth 1.0
@@ -487,8 +486,8 @@
 @    s4 symbol char 65
 @    s4 symbol char font 0
 @    s4 symbol skip 0
-@    s4 line type 0
-@    s4 line linestyle 1
+@    s4 line type 1
+@    s4 line linestyle 0
 @    s4 line linewidth 1.0
 @    s4 line color 4
 @    s4 line pattern 1
@@ -571,7 +570,7 @@
 @    s5 errorbar riser clip off
 @    s5 errorbar riser clip length 0.100000
 @    s5 comment "/home/olo/DissProj_1/PAD_msm_wilson/plaq_occ_beta2stats.dat"
-@    s5 legend  "PAD w/ Wilson (Oliver)"
+@    s5 legend  "PAD w/ Wilson (Oliver, alt)"
 @    s6 hidden false
 @    s6 type xydy
 @    s6 symbol 4
@@ -670,6 +669,55 @@
 @    s7 errorbar riser clip length 0.100000
 @    s7 comment "/home/olo/DissProj_1/PAD_msm_wilson/plaq_occ_beta_stats_pg.dat"
 @    s7 legend  "Pure gauge (Oliver)"
+@    s8 hidden false
+@    s8 type xydy
+@    s8 symbol 1
+@    s8 symbol size 0.500000
+@    s8 symbol color 1
+@    s8 symbol pattern 1
+@    s8 symbol fill color 1
+@    s8 symbol fill pattern 0
+@    s8 symbol linewidth 1.5
+@    s8 symbol linestyle 1
+@    s8 symbol char 65
+@    s8 symbol char font 0
+@    s8 symbol skip 0
+@    s8 line type 1
+@    s8 line linestyle 1
+@    s8 line linewidth 1.0
+@    s8 line color 1
+@    s8 line pattern 1
+@    s8 baseline type 0
+@    s8 baseline off
+@    s8 dropline off
+@    s8 fill type 0
+@    s8 fill rule 0
+@    s8 fill color 1
+@    s8 fill pattern 1
+@    s8 avalue off
+@    s8 avalue type 2
+@    s8 avalue char size 1.000000
+@    s8 avalue font 0
+@    s8 avalue color 1
+@    s8 avalue rot 0
+@    s8 avalue format general
+@    s8 avalue prec 3
+@    s8 avalue prepend ""
+@    s8 avalue append ""
+@    s8 avalue offset 0.000000 , 0.000000
+@    s8 errorbar on
+@    s8 errorbar place both
+@    s8 errorbar color 1
+@    s8 errorbar pattern 1
+@    s8 errorbar size 1.000000
+@    s8 errorbar linewidth 1.0
+@    s8 errorbar linestyle 1
+@    s8 errorbar riser linewidth 1.0
+@    s8 errorbar riser linestyle 1
+@    s8 errorbar riser clip off
+@    s8 errorbar riser clip length 0.100000
+@    s8 comment "/home/oliver/Documents/Work/DissProj/PAD_wilson/plaq_occ_beta_full1_new_stats.dat"
+@    s8 legend  "PAD w/ Wilson (Oliver, neu)"
 @target G0.S0
 @type xy
 0 0.11764706
@@ -2445,4 +2493,28 @@
 5.8 0.914938 0.00936507
 5.9 0.916494 0.00909687
 6 0.917993 0.00875048
+&
+@target G0.S8
+@type xydy
+0.1 0.106858 0.192131
+0.4 0.260916 0.10951
+0.7 0.398658 0.0889057
+1 0.514836 0.0766728
+1.3 0.606174 0.0637355
+1.6 0.677796 0.0541926
+1.9 0.730488 0.0445237
+2.2 0.770297 0.0364248
+2.5 0.800298 0.0306739
+2.8 0.823952 0.0252118
+3.1 0.842682 0.0218064
+3.4 0.857529 0.0185196
+3.7 0.869813 0.016268
+4 0.880095 0.014356
+4.3 0.889004 0.0128308
+4.6 0.896336 0.0115872
+4.9 0.903046 0.0108818
+5.2 0.908688 0.00999568
+5.5 0.913746 0.00906006
+5.8 0.918411 0.00854202
+6.1 0.922371 0.00814082
 &

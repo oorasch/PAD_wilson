@@ -6,6 +6,7 @@ namespace constants
     // forward declarations only
     extern const double pi;
     extern const double ln2;
+    extern const int neibs;
     extern const int Nt;
     extern const int Ns;
 		extern const int V;

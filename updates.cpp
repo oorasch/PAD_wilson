@@ -18,7 +18,7 @@ using namespace std;
 /*############################################ Loop updates ############################################*/
 /*######################################################################################################*/
 
-void do_updates(const int n, const int neib[][4], const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link, vector<vector<int>>& sig_link)
+void do_updates(const int n, const vector<vector<int>>& neib, const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link, vector<vector<int>>& sig_link)
 {
 	for(int i = 0; i < n; i++)
 	{		
@@ -29,7 +29,7 @@ void do_updates(const int n, const int neib[][4], const vector<double>& I_bessel
 	}
 }
 
-void do_loop_updates(const int neib[][4], const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link, vector<vector<int>>& sig_link)
+void do_loop_updates(const vector<vector<int>>& neib, const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link, vector<vector<int>>& sig_link)
 {
 	vector<int> coords (4, 0);
 	
@@ -70,7 +70,7 @@ void do_loop_updates(const int neib[][4], const vector<double>& I_bessel, double
 }
 
 //insertion of a plaquette
-void plaquette_ins_update(const int neib[][4], const vector<int>& coords, const vector<vector<int>>& sig_link, const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link)
+void plaquette_ins_update(const vector<vector<int>>& neib, const vector<int>& coords, const vector<vector<int>>& sig_link, const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link)
 {
 	std::uniform_int_distribution<int> delta_distribution(0,1);
 	std::uniform_real_distribution<double> uniform_distribution(0.0,1.0);
@@ -156,7 +156,7 @@ void plaquette_ins_update(const int neib[][4], const vector<int>& coords, const 
 }
 
 //deletion of a plaquette
-void plaquette_del_update (const int neib[][4], const vector<int>& coords, const vector<vector<int>>& sig_link, const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link)
+void plaquette_del_update (const vector<vector<int>>& neib, const vector<int>& coords, const vector<vector<int>>& sig_link, const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link)
 {
 	std::uniform_real_distribution<double> uniform_distribution(0.0,1.0);
 	vector<int> s_site_prime = s_site;
@@ -235,7 +235,7 @@ void plaquette_del_update (const int neib[][4], const vector<int>& coords, const
 }
 
 //expand a loop
-void loop_exp_update(const int neib[][4], const vector<int>& coords, const vector<vector<int>>& sig_link, const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link)
+void loop_exp_update(const vector<vector<int>>& neib, const vector<int>& coords, const vector<vector<int>>& sig_link, const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link)
 {
 	std::uniform_real_distribution<double> uniform_distribution(0.0,1.0);
 	vector<int> s_site_prime = s_site;
@@ -349,7 +349,7 @@ void loop_exp_update(const int neib[][4], const vector<int>& coords, const vecto
 		}
 }
 
-//void loop_exp_update(const int neib[][4], const vector<int>& coords, const vector<vector<int>>& sig_link, const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link)
+//void loop_exp_update(const vector<vector<int>>& neib, const vector<int>& coords, const vector<vector<int>>& sig_link, const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link)
 //{
 //	std::uniform_real_distribution<double> uniform_distribution(0.0,1.0);
 //	vector<int> s_site_prime = s_site;
@@ -609,7 +609,7 @@ void loop_exp_update(const int neib[][4], const vector<int>& coords, const vecto
 //}
 
 //collapse a loop
-void loop_col_update(const int neib[][4], const vector<int>& coords, const vector<vector<int>>& sig_link, const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link)
+void loop_col_update(const vector<vector<int>>& neib, const vector<int>& coords, const vector<vector<int>>& sig_link, const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link)
 {
 	std::uniform_real_distribution<double> uniform_distribution(0.0,1.0);
 	vector<int> s_site_prime = s_site;
@@ -723,7 +723,7 @@ void loop_col_update(const int neib[][4], const vector<int>& coords, const vecto
 		}
 }
 
-//void loop_col_update(const int neib[][4], const vector<int>& coords, const vector<vector<int>>& sig_link, const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link)
+//void loop_col_update(const vector<vector<int>>& neib, const vector<int>& coords, const vector<vector<int>>& sig_link, const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link)
 //{
 //	std::uniform_real_distribution<double> uniform_distribution(0.0,1.0);
 //	vector<int> s_site_prime = s_site;
@@ -1093,7 +1093,7 @@ void do_blanket_update(const vector<double>& I_bessel, vector<int>& plaq_occ)
 /*########################################### Sigma update #############################################*/
 /*######################################################################################################*/
 
-void do_sigma_update(const int neib [][4], const vector<int> s_site, double detM, vector<vector<int>>& sig_link)
+void do_sigma_update(const vector<vector<int>>& neib, const vector<int> s_site, double detM, vector<vector<int>>& sig_link)
 {
 	std::uniform_real_distribution<double> uniform_distribution(0.0,1.0);
 	//vector<vector<int>> sig_link_prime = sig_link;

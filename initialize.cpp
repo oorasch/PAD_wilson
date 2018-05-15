@@ -8,7 +8,7 @@ std::ranlux48 generator1(seed1);
 using namespace std;
 
 
-void neib_init (const int &N1, const int &N2, int neib[][4])
+void neib_init (const int &N1, const int &N2, vector<vector<int>>& neib)
 {
     int k,xm,xp,yp,ym;
 
@@ -54,7 +54,7 @@ void sig_init (vector<vector<int>>& sig_link)
 }
 
 
-void calc_M_array(const int neib [][4], const vector<vector<int>>& sig_link, const vector<int>& s_site, vector<double>& M_prime)
+void calc_M_array(const vector<vector<int>>& neib, const vector<vector<int>>& sig_link, const vector<int>& s_site, vector<double>& M_prime)
 {
 	//vector<double> M_prime (V*V, 0.0);
 	

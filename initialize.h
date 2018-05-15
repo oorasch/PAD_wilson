@@ -17,11 +17,11 @@
  * @return filled neighbour field
  *
  */
-void neib_init (const int &N1, const int &N2, int neib[][4]);
+void neib_init (const int &N1, const int &N2, std::vector<std::vector<int>>& neib);
 
 void sig_init (std::vector<std::vector<int>>& sig_link);
 
-void calc_M_array(const int neib [][4], const std::vector<std::vector<int>>& sig_link, const std::vector<int>& s_site, std::vector<double>& M_prime);
+void calc_M_array(const std::vector<std::vector<int>>& neib, const std::vector<std::vector<int>>& sig_link, const std::vector<int>& s_site, std::vector<double>& M_prime);
 
 void bessel_init(std::vector<double>& vec);
 

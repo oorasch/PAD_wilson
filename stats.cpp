@@ -18,7 +18,7 @@ int main (int argc, char* argv[])
     const double pi(3.14159265359);
 
 
-		string VERSION("_full1_newexp");
+		string VERSION ("_full1_new");
 //		string VERSION("_gpdecs1");
 //		string PARAM("_theta");austria
 		string PARAM("_beta");
@@ -92,7 +92,7 @@ int main (int argc, char* argv[])
 			//cout << sigma1 << " " << sigma2 << endl;
 		
 			outfile1 << th << " " << avg1 << " " << sigma1 << endl;
-			th += 0.5;
+			th += 0.3;
     }
     outfile1.close();
     
