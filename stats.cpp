@@ -8,7 +8,7 @@
 
 using namespace std;
 
-int main ()
+int main (int argc, char* argv[])
 {
     cout << "Hello world - this is a statistics program" << endl << endl;
     cout << "Currently the method is: Blocking" << endl;
@@ -17,7 +17,16 @@ int main ()
     const int nmeas = 1e4;
     const double pi(3.14159265359);
 
-    vector<double> data1, data2;
+
+		string VERSION("_full1_newexp");
+//		string VERSION("_gpdecs1");
+//		string PARAM("_theta");austria
+		string PARAM("_beta");
+		string OBS(argv[1]);
+		
+		string FILE_NAME(OBS+PARAM+VERSION+".dat");
+
+    vector<double> data1;
 
 //    stringstream s1, s2, s3, s4;
 //    s1 << Nt;
@@ -26,11 +35,10 @@ int main ()
 //    s4 << lambda;
 //    string s_Nt = s1.str(), s_Ns = s2.str(), s_eta = s3.str(), s_lambda = s4.str();
     //ifstream infile ("phi_sq("+s_Nt+","+s_Ns+","+s_eta+","+s_lambda+").dat");
-    ifstream infile1, infile2;
-    infile1.open("topo_chrg_beta_full3.dat");
-    infile2.open("plaq_occ_beta_full3.dat");
+    ifstream infile1;
+    infile1.open(FILE_NAME);
 
-    if(infile1.is_open() && infile2.is_open())
+    if(infile1.is_open())
     {
         double tmp;
         while(!infile1.eof())
@@ -40,19 +48,10 @@ int main ()
         }
 
         data1.pop_back();
-        
-        while(!infile2.eof())
-        {
-            infile2 >> tmp;
-            data2.push_back(tmp);
-        }
-
-        data2.pop_back();
 
         if((data1.size()%nmeas)) cout << "Something went wrong!!!" << endl;
 
         cout << data1.size() << " " << nmeas << endl;
-        cout << data2.size() << " " << nmeas << endl;
 
     }
     else
@@ -60,48 +59,42 @@ int main ()
         cout << "Unable to open file";
         abort();
     }
-    infile1.close(); infile2.close();
+    infile1.close();
     
-    ofstream outfile1, outfile2;
-    outfile1.open("topo_chrg_beta_full3_stats.dat");
-    outfile2.open("plaq_occ_beta_full3_stats.dat");
+    ofstream outfile1;
+    outfile1.open(OBS+PARAM+VERSION+"_stats.dat");
+
     
     double th = 0.1;
     for(int i = 0; i < data1.size(); i+= nmeas)
 		{
 			//calc mean
-    	double avg1 = 0.0, avg2 = 0.0;
+    	double avg1 = 0.0;
 			for(int j = i; j < i+nmeas; j++)
 			{
 				avg1 += data1.at(j);
-				avg2 += data2.at(j);
 			}
 			
 			//cout << avg1 << " " << avg2 << endl;
 			
 			avg1 /= nmeas;
-			avg2 /= nmeas;
 			
 			//cout << avg1 << " " << avg2 << endl;
 			
-			double sigma1 = 0.0, sigma2 = 0.0;
+			double sigma1 = 0.0;
 			for(int j = i; j < i+nmeas; j++)
 			{
 				sigma1 += (avg1 - data1.at(j))*(avg1 - data1.at(j));
-				sigma2 += (avg2 - data2.at(j))*(avg2 - data2.at(j));
 			}
 			//cout << sigma1 << " " << sigma2 << endl;
 			sigma1 /= nmeas - 1.0;
 			sigma1 = sqrt(sigma1);
-			sigma2 /= nmeas - 1.0;
-			sigma2 = sqrt(sigma2);
 			//cout << sigma1 << " " << sigma2 << endl;
 		
 			outfile1 << th << " " << avg1 << " " << sigma1 << endl;
-			outfile2 << th << " " << avg2 << " " << sigma2 << endl;
-			th += 0.1;
+			th += 0.5;
     }
-    outfile1.close(); outfile2.close();
+    outfile1.close();
     
     
 

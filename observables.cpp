@@ -6,6 +6,15 @@
 
 using namespace std;
 
+double meas_plaq_occ(const vector<int>& plaq_occ, const vector<double>& I_bessel)
+{
+	int tmp = 0;
+
+	for(auto it: plaq_occ) tmp += abs(it);
+	
+	return tmp/(1.0*constants::V);	
+}
+
 double meas_plaq(const vector<int>& plaq_occ, const vector<double>& I_bessel)
 {
 	double tmp = 0.0;

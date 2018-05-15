@@ -32,8 +32,6 @@ void do_updates(const int n, const int neib[][4], const vector<double>& I_bessel
 void do_loop_updates(const int neib[][4], const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link, vector<vector<int>>& sig_link)
 {
 	vector<int> coords (4, 0);
-	int site_check = 0;
-	int link_check = 0;
 	
 	for(int i = 0; i < constants::V; i++)
 	{
@@ -44,9 +42,8 @@ void do_loop_updates(const int neib[][4], const vector<double>& I_bessel, double
 				
 		//cout << site_check << " " << link_check << endl;
 		
-		site_check = s_site.at(coords.at(0)) + s_site.at(coords.at(1)) + s_site.at(coords.at(2)) + s_site.at(coords.at(3));
-		link_check = abs(k_link[coords.at(0)][1]) + abs(k_link[coords.at(1)][0]);
-		link_check += abs(k_link[coords.at(3)][1]) + abs(k_link[coords.at(0)][0]);
+		int site_check = s_site.at(coords.at(0)) + s_site.at(coords.at(1)) + s_site.at(coords.at(2)) + s_site.at(coords.at(3));
+		int link_check = abs(k_link[coords.at(0)][1]) + abs(k_link[coords.at(1)][0]) + abs(k_link[coords.at(3)][1]) + abs(k_link[coords.at(0)][0]);
 		
 		if(site_check == 4 && link_check == 0)//insert a plaquette
 		{
@@ -242,583 +239,801 @@ void loop_exp_update(const int neib[][4], const vector<int>& coords, const vecto
 {
 	std::uniform_real_distribution<double> uniform_distribution(0.0,1.0);
 	vector<int> s_site_prime = s_site;
-	int delta;
+	vector<int> k_link_prime (4, 0), coords_tmp (2, 0);
+	int delta = 2, delta_p = 2;
 	vector<double> M_prime (constants::V*constants::V, 0.0);
 	double detM_prime = 0.0;
-	double rho = 1.0;
-	//int delta_L = 2;
+	double rho = 1.0/2.0/2.0;
 	
 	if(k_link[coords.at(0)][0] != 0)//loop in time direction
 	{
 		delta = k_link[coords.at(0)][0];
-		s_site_prime.at(coords.at(1)) = 0;
-		s_site_prime.at(coords.at(2)) = 0;
-		
-		//fill the fermion matrix
-		calc_M_array(neib, sig_link, s_site_prime, M_prime);
-
-		//calculate the log of the determinant
-		detM_prime = det(constants::V, M_prime);
-
-		if(detM_prime != 0.0 ) //catch the case detM = 0
-		{
-		
-			rho /= 2.0*2.0;
-			rho *= detM_prime/detM;
-		
-			if(delta == 1)
-			{
-				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) - 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-				rho *= sqrt(constants::eta_bar/constants::eta);
-			}
-			else
-			{
-				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-				rho *= sqrt(constants::eta/constants::eta_bar);
-			}
-	
-			if(rho >= 1.0)
-			{
-				s_site.at(coords.at(1)) = 0;
-				s_site.at(coords.at(2)) = 0;
-	
-				plaq_occ.at(coords.at(0)) -= delta; //
-	
-				detM = detM_prime; // store the fermion determinant
-	
-				//change the loop configuration
-				k_link[coords.at(0)][1] = delta;
-				k_link[coords.at(1)][0] = delta;
-				k_link[coords.at(3)][1] = -delta;
-				k_link[coords.at(0)][0] = 0; //we have to delete this link
-			}
-			else if(uniform_distribution(generator) < rho)
-			{
-				s_site.at(coords.at(1)) = 0;
-				s_site.at(coords.at(2)) = 0;
-	
-				plaq_occ.at(coords.at(0)) -= delta; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
-	
-				detM = detM_prime; // store the fermion determinant
-	
-				//change the loop configuration
-				k_link[coords.at(0)][1] = delta;
-				k_link[coords.at(1)][0] = delta;
-				k_link[coords.at(3)][1] = -delta;
-				k_link[coords.at(0)][0] = 0; //we have to delete this link
-			}
-		}
+		delta_p = -delta;
+		coords_tmp.at(0) = coords.at(1);
+		coords_tmp.at(1) = coords.at(2);
+		//#######################################################
+		s_site_prime.at(coords_tmp.at(0)) = 0;
+		s_site_prime.at(coords_tmp.at(1)) = 0;	
+		k_link_prime.at(0) = delta; //for coords.at(0) in dir 1
+		k_link_prime.at(1) = delta;
+		k_link_prime.at(2) = -delta;
+		k_link_prime.at(3) = 0;
 	}
 	else if(k_link[coords.at(0)][1] != 0)//loop in spatial dierction
 	{
 		delta = k_link[coords.at(0)][1];
-		s_site_prime.at(coords.at(2)) = 0;
-		s_site_prime.at(coords.at(3)) = 0;
-		
-		//fill the fermion matrix
-		calc_M_array(neib, sig_link, s_site_prime, M_prime);
-
-		//calculate the log of the determinant
-		detM_prime = det(constants::V, M_prime);
-
-		if(detM_prime != 0.0 ) //catch the case detM = 0
-		{
-			rho /= 2.0*2.0;
-			rho *= detM_prime/detM;
-		
-			if(delta == 1)
-			{
-				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-				rho *= sqrt(constants::eta/constants::eta_bar);
-			}
-			else
-			{
-				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) - 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-				rho *= sqrt(constants::eta_bar/constants::eta);
-			}
-			
-			if(rho >= 1.0)
-			{
-				s_site.at(coords.at(2)) = 0;
-				s_site.at(coords.at(3)) = 0;
-	
-				//is this true?!?
-				plaq_occ.at(coords.at(0)) += delta; //
-	
-				detM = detM_prime; // store the fermion determinant
-	
-				//change the loop configuration
-				k_link[coords.at(0)][1] = 0;
-				k_link[coords.at(1)][0] = -delta;
-				k_link[coords.at(3)][1] = delta;
-				k_link[coords.at(0)][0] = delta; //we have to delete this link
-			}
-			else if(uniform_distribution(generator) < rho)
-			{
-				s_site.at(coords.at(2)) = 0;
-				s_site.at(coords.at(3)) = 0;
-	
-				plaq_occ.at(coords.at(0)) += delta; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
-	
-				detM = detM_prime; // store the fermion determinant
-	
-				//change the loop configuration
-				k_link[coords.at(0)][1] = 0;
-				k_link[coords.at(1)][0] = -delta;
-				k_link[coords.at(3)][1] = delta;
-				k_link[coords.at(0)][0] = delta; //we have to delete this link
-			}
-			
-		}
+		delta_p = delta;
+		coords_tmp.at(0) = coords.at(2);
+		coords_tmp.at(1) = coords.at(3);
+		//#######################################################
+		s_site_prime.at(coords_tmp.at(0)) = 0;
+		s_site_prime.at(coords_tmp.at(1)) = 0;
+		k_link_prime.at(0) = 0;
+		k_link_prime.at(1) = -delta;
+		k_link_prime.at(2) = delta;
+		k_link_prime.at(3) = delta;
 	}
 	else if(k_link[coords.at(3)][1] != 0) //loop in spatial direction
 	{
 		delta = k_link[coords.at(3)][1];
-		s_site_prime.at(coords.at(0)) = 0;
-		s_site_prime.at(coords.at(1)) = 0;
-		
-		//fill the fermion matrix
-		calc_M_array(neib, sig_link, s_site_prime, M_prime);
-
-		//calculate the log of the determinant
-		detM_prime = det(constants::V, M_prime);
-
-		if(detM_prime != 0.0 ) //catch the case detM = 0
-		{
-			rho /= 2.0*2.0;
-			rho *= detM_prime/detM;
-		
-			if(delta == 1)
-			{
-				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) - 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-				rho *= sqrt(constants::eta_bar/constants::eta);
-			}
-			else
-			{
-				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-				rho *= sqrt(constants::eta/constants::eta_bar);
-			}
-			
-			if(rho >= 0.0)
-			{
-				s_site.at(coords.at(0)) = 0;
-				s_site.at(coords.at(1)) = 0;
-	
-				//is this true?!?
-				plaq_occ.at(coords.at(0)) -= delta; //
-	
-				detM = detM_prime; // store the fermion determinant
-	
-				//change the loop configuration
-				k_link[coords.at(0)][1] = delta;
-				k_link[coords.at(1)][0] = delta;
-				k_link[coords.at(3)][1] = 0;
-				k_link[coords.at(0)][0] = -delta; //we have to delete this link
-			}
-			else if(uniform_distribution(generator) < rho)
-			{
-				s_site.at(coords.at(0)) = 0;
-				s_site.at(coords.at(1)) = 0;
-	
-				plaq_occ.at(coords.at(0)) -= delta; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
-	
-				detM = detM_prime; // store the fermion determinant
-	
-				//change the loop configuration
-				k_link[coords.at(0)][1] = delta;
-				k_link[coords.at(1)][0] = delta;
-				k_link[coords.at(3)][1] = 0;
-				k_link[coords.at(0)][0] = -delta; //we have to delete this link
-			}
-			
-		}
+		delta_p = -delta;
+		coords_tmp.at(0) = coords.at(0);
+		coords_tmp.at(1) = coords.at(1);
+		//#######################################################
+		s_site_prime.at(coords_tmp.at(0)) = 0;
+		s_site_prime.at(coords_tmp.at(1)) = 0;
+		k_link_prime.at(0) = delta;
+		k_link_prime.at(1) = delta;
+		k_link_prime.at(2) = 0;
+		k_link_prime.at(3) = -delta;
 	}
 	else if(k_link[coords.at(1)][0] != 0)//loop in time direction//loop in temporal direction
 	{
 		delta = k_link[coords.at(1)][0];
-		s_site_prime.at(coords.at(0)) = 0;
-		s_site_prime.at(coords.at(3)) = 0;
+		delta_p = delta;
+		coords_tmp.at(0) = coords.at(0);
+		coords_tmp.at(1) = coords.at(3);
+		//#######################################################
+		s_site_prime.at(coords_tmp.at(0)) = 0;
+		s_site_prime.at(coords_tmp.at(1)) = 0;
+		k_link_prime.at(0) = -delta;
+		k_link_prime.at(1) = 0;
+		k_link_prime.at(2) = delta;
+		k_link_prime.at(3) = delta;
 		
-		//fill the fermion matrix
-		calc_M_array(neib, sig_link, s_site_prime, M_prime);
-
-		//calculate the log of the determinant
-		detM_prime = det(constants::V, M_prime);
-
-		if(detM_prime != 0.0) //catch the case detM = 0
-		{
-			rho /= 2.0*2.0;
-			rho *= detM_prime/detM;
-		
-			if(delta == 1)
-			{
-				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-				rho *= sqrt(constants::eta/constants::eta_bar);
-			}
-			else
-			{
-				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) - 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-				rho *= sqrt(constants::eta_bar/constants::eta);
-			}
-			
-			if(rho >= 0.0)
-			{
-				s_site.at(coords.at(0)) = 0;
-				s_site.at(coords.at(3)) = 0;
-	
-				//is this true?!?
-				plaq_occ.at(coords.at(0)) += delta; //
-	
-				detM = detM_prime; // store the fermion determinant
-	
-				//change the loop configuration
-				k_link[coords.at(0)][1] = -delta;
-				k_link[coords.at(1)][0] = 0;
-				k_link[coords.at(3)][1] = delta;
-				k_link[coords.at(0)][0] = delta; //we have to delete this link
-			}
-			else if(uniform_distribution(generator) < rho)
-			{
-				s_site.at(coords.at(0)) = 0;
-				s_site.at(coords.at(3)) = 0;
-	
-				plaq_occ.at(coords.at(0)) += delta; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
-	
-				detM = detM_prime; // store the fermion determinant
-	
-				//change the loop configuration
-				k_link[coords.at(0)][1] = -delta;
-				k_link[coords.at(1)][0] = 0;
-				k_link[coords.at(3)][1] = delta;
-				k_link[coords.at(0)][0] = delta; //we have to delete this link
-			}
-			
-		}
 	}
+
+	//fill the fermion matrix
+	calc_M_array(neib, sig_link, s_site_prime, M_prime);
+
+	//calculate the log of the determinant
+	detM_prime = det(constants::V, M_prime);
+
+	if(detM_prime > 0.0) //catch the case detM = 0
+	{
+	 	rho *= detM_prime/detM;
+		rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + delta_p))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+		if(delta_p == 1) rho *= sqrt(constants::eta/constants::eta_bar);
+			else					 rho /= sqrt(constants::eta/constants::eta_bar);
+	
+		if(rho >= 1.0)
+				{
+					s_site.at(coords_tmp.at(0)) = 0;
+					s_site.at(coords_tmp.at(1)) = 0;
+	
+					plaq_occ.at(coords.at(0)) += delta_p;
+	
+					detM = detM_prime; // store the fermion determinant
+	
+					//change the loop configuration
+					k_link[coords.at(0)][1] = k_link_prime.at(0);
+					k_link[coords.at(1)][0] = k_link_prime.at(1);
+					k_link[coords.at(3)][1] = k_link_prime.at(2);
+					k_link[coords.at(0)][0] = k_link_prime.at(3);
+				}
+				else if(uniform_distribution(generator) < rho)
+				{
+					s_site.at(coords_tmp.at(0)) = 0;
+					s_site.at(coords_tmp.at(1)) = 0;
+	
+					plaq_occ.at(coords.at(0)) += delta_p;
+	
+					detM = detM_prime; // store the fermion determinant
+	
+					//change the loop configuration
+					k_link[coords.at(0)][1] = k_link_prime.at(0);
+					k_link[coords.at(1)][0] = k_link_prime.at(1);
+					k_link[coords.at(3)][1] = k_link_prime.at(2);
+					k_link[coords.at(0)][0] = k_link_prime.at(3);
+				}
+		}
 }
+
+//void loop_exp_update(const int neib[][4], const vector<int>& coords, const vector<vector<int>>& sig_link, const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link)
+//{
+//	std::uniform_real_distribution<double> uniform_distribution(0.0,1.0);
+//	vector<int> s_site_prime = s_site;
+//	int delta;
+//	vector<double> M_prime (constants::V*constants::V, 0.0);
+//	double detM_prime = 0.0;
+//	double rho = 1.0;
+//	//int delta_L = 2;
+//	
+//	if(k_link[coords.at(0)][0] != 0)//loop in time direction
+//	{
+//		delta = k_link[coords.at(0)][0];
+//		s_site_prime.at(coords.at(1)) = 0;
+//		s_site_prime.at(coords.at(2)) = 0;
+//		
+//		//fill the fermion matrix
+//		calc_M_array(neib, sig_link, s_site_prime, M_prime);
+
+//		//calculate the log of the determinant
+//		detM_prime = det(constants::V, M_prime);
+
+//		if(detM_prime != 0.0 ) //catch the case detM = 0
+//		{
+//		
+//			rho /= 2.0*2.0;
+//			rho *= detM_prime/detM;
+//		
+//			if(delta == 1)
+//			{
+//				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) - 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+//				rho *= sqrt(constants::eta_bar/constants::eta);
+//			}
+//			else
+//			{
+//				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+//				rho *= sqrt(constants::eta/constants::eta_bar);
+//			}
+//	
+//			if(rho >= 1.0)
+//			{
+//				s_site.at(coords.at(1)) = 0;
+//				s_site.at(coords.at(2)) = 0;
+//	
+//				plaq_occ.at(coords.at(0)) -= delta; //
+//	
+//				detM = detM_prime; // store the fermion determinant
+//	
+//				//change the loop configuration
+//				k_link[coords.at(0)][1] = delta;
+//				k_link[coords.at(1)][0] = delta;
+//				k_link[coords.at(3)][1] = -delta;
+//				k_link[coords.at(0)][0] = 0; //we have to delete this link
+//			}
+//			else if(uniform_distribution(generator) < rho)
+//			{
+//				s_site.at(coords.at(1)) = 0;
+//				s_site.at(coords.at(2)) = 0;
+//	
+//				plaq_occ.at(coords.at(0)) -= delta; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
+//	
+//				detM = detM_prime; // store the fermion determinant
+//	
+//				//change the loop configuration
+//				k_link[coords.at(0)][1] = delta;
+//				k_link[coords.at(1)][0] = delta;
+//				k_link[coords.at(3)][1] = -delta;
+//				k_link[coords.at(0)][0] = 0; //we have to delete this link
+//			}
+//		}
+//	}
+//	else if(k_link[coords.at(0)][1] != 0)//loop in spatial dierction
+//	{
+//		delta = k_link[coords.at(0)][1];
+//		s_site_prime.at(coords.at(2)) = 0;
+//		s_site_prime.at(coords.at(3)) = 0;
+//		
+//		//fill the fermion matrix
+//		calc_M_array(neib, sig_link, s_site_prime, M_prime);
+
+//		//calculate the log of the determinant
+//		detM_prime = det(constants::V, M_prime);
+
+//		if(detM_prime != 0.0) //catch the case detM = 0
+//		{
+//			rho /= 2.0*2.0;
+//			rho *= detM_prime/detM;
+//		
+//			if(delta == 1)
+//			{
+//				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+//				rho *= sqrt(constants::eta/constants::eta_bar);
+//			}
+//			else
+//			{
+//				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) - 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+//				rho *= sqrt(constants::eta_bar/constants::eta);
+//			}
+//			
+//			if(rho >= 1.0)
+//			{
+//				s_site.at(coords.at(2)) = 0;
+//				s_site.at(coords.at(3)) = 0;
+//	
+//				//is this true?!?
+//				plaq_occ.at(coords.at(0)) += delta; //
+//	
+//				detM = detM_prime; // store the fermion determinant
+//	
+//				//change the loop configuration
+//				k_link[coords.at(0)][1] = 0;
+//				k_link[coords.at(1)][0] = -delta;
+//				k_link[coords.at(3)][1] = delta;
+//				k_link[coords.at(0)][0] = delta; //we have to delete this link
+//			}
+//			else if(uniform_distribution(generator) < rho)
+//			{
+//				s_site.at(coords.at(2)) = 0;
+//				s_site.at(coords.at(3)) = 0;
+//	
+//				plaq_occ.at(coords.at(0)) += delta; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
+//	
+//				detM = detM_prime; // store the fermion determinant
+//	
+//				//change the loop configuration
+//				k_link[coords.at(0)][1] = 0;
+//				k_link[coords.at(1)][0] = -delta;
+//				k_link[coords.at(3)][1] = delta;
+//				k_link[coords.at(0)][0] = delta; //we have to delete this link
+//			}
+//			
+//		}
+//	}
+//	else if(k_link[coords.at(3)][1] != 0) //loop in spatial direction
+//	{
+//		delta = k_link[coords.at(3)][1];
+//		s_site_prime.at(coords.at(0)) = 0;
+//		s_site_prime.at(coords.at(1)) = 0;
+//		
+//		//fill the fermion matrix
+//		calc_M_array(neib, sig_link, s_site_prime, M_prime);
+
+//		//calculate the log of the determinant
+//		detM_prime = det(constants::V, M_prime);
+
+//		if(detM_prime != 0.0 ) //catch the case detM = 0
+//		{
+//			rho /= 2.0*2.0;
+//			rho *= detM_prime/detM;
+//		
+//			if(delta == 1)
+//			{
+//				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) - 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+//				rho *= sqrt(constants::eta_bar/constants::eta);
+//			}
+//			else
+//			{
+//				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+//				rho *= sqrt(constants::eta/constants::eta_bar);
+//			}
+//			
+//			if(rho >= 0.0)
+//			{
+//				s_site.at(coords.at(0)) = 0;
+//				s_site.at(coords.at(1)) = 0;
+//	
+//				//is this true?!?
+//				plaq_occ.at(coords.at(0)) -= delta; //
+//	
+//				detM = detM_prime; // store the fermion determinant
+//	
+//				//change the loop configuration
+//				k_link[coords.at(0)][1] = delta;
+//				k_link[coords.at(1)][0] = delta;
+//				k_link[coords.at(3)][1] = 0;
+//				k_link[coords.at(0)][0] = -delta; //we have to delete this link
+//			}
+//			else if(uniform_distribution(generator) < rho)
+//			{
+//				s_site.at(coords.at(0)) = 0;
+//				s_site.at(coords.at(1)) = 0;
+//	
+//				plaq_occ.at(coords.at(0)) -= delta; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
+//	
+//				detM = detM_prime; // store the fermion determinant
+//	
+//				//change the loop configuration
+//				k_link[coords.at(0)][1] = delta;
+//				k_link[coords.at(1)][0] = delta;
+//				k_link[coords.at(3)][1] = 0;
+//				k_link[coords.at(0)][0] = -delta; //we have to delete this link
+//			}
+//			
+//		}
+//	}
+//	else if(k_link[coords.at(1)][0] != 0)//loop in time direction//loop in temporal direction
+//	{
+//		delta = k_link[coords.at(1)][0];
+//		s_site_prime.at(coords.at(0)) = 0;
+//		s_site_prime.at(coords.at(3)) = 0;
+//		
+//		//fill the fermion matrix
+//		calc_M_array(neib, sig_link, s_site_prime, M_prime);
+
+//		//calculate the log of the determinant
+//		detM_prime = det(constants::V, M_prime);
+
+//		if(detM_prime != 0.0) //catch the case detM = 0
+//		{
+//			rho /= 2.0*2.0;
+//			rho *= detM_prime/detM;
+//		
+//			if(delta == 1)
+//			{
+//				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+//				rho *= sqrt(constants::eta/constants::eta_bar);
+//			}
+//			else
+//			{
+//				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) - 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+//				rho *= sqrt(constants::eta_bar/constants::eta);
+//			}
+//			
+//			if(rho >= 0.0)
+//			{
+//				s_site.at(coords.at(0)) = 0;
+//				s_site.at(coords.at(3)) = 0;
+//	
+//				//is this true?!?
+//				plaq_occ.at(coords.at(0)) += delta; //
+//	
+//				detM = detM_prime; // store the fermion determinant
+//	
+//				//change the loop configuration
+//				k_link[coords.at(0)][1] = -delta;
+//				k_link[coords.at(1)][0] = 0;
+//				k_link[coords.at(3)][1] = delta;
+//				k_link[coords.at(0)][0] = delta; //we have to delete this link
+//			}
+//			else if(uniform_distribution(generator) < rho)
+//			{
+//				s_site.at(coords.at(0)) = 0;
+//				s_site.at(coords.at(3)) = 0;
+//	
+//				plaq_occ.at(coords.at(0)) += delta; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
+//	
+//				detM = detM_prime; // store the fermion determinant
+//	
+//				//change the loop configuration
+//				k_link[coords.at(0)][1] = -delta;
+//				k_link[coords.at(1)][0] = 0;
+//				k_link[coords.at(3)][1] = delta;
+//				k_link[coords.at(0)][0] = delta; //we have to delete this link
+//			}
+//			
+//		}
+//	}
+//}
 
 //collapse a loop
 void loop_col_update(const int neib[][4], const vector<int>& coords, const vector<vector<int>>& sig_link, const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link)
 {
 	std::uniform_real_distribution<double> uniform_distribution(0.0,1.0);
 	vector<int> s_site_prime = s_site;
-	int delta;
+	vector<int> k_link_prime (4, 0), coords_tmp (2, 0);
+	int delta = 2, delta_p = 2;
 	vector<double> M_prime (constants::V*constants::V, 0.0);
 	double detM_prime = 0.0;
-	double rho = 1.0;
-	//int delta_L = -2;
+	double rho = 2.0*2.0;
 	
-	if(k_link[coords.at(0)][0] == 0)//no loop in time direction 
+	if(k_link[coords.at(0)][0] == 0)//loop in time direction
 	{
 		delta = k_link[coords.at(1)][0];
-		s_site_prime.at(coords.at(1)) = 1;
-		s_site_prime.at(coords.at(2)) = 1;
-		
-		//fill the fermion matrix
-		calc_M_array(neib, sig_link, s_site_prime, M_prime);
-
-		//calculate the log of the determinant
-		detM_prime = det(constants::V, M_prime);
-
-		if(detM_prime != 0.0) //catch the case detM = 0
-		{
-			rho *= 2.0*2.0;
-			rho *= detM_prime/detM;
-		
-			if(delta == 1)
-			{
-				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-				rho *= sqrt(constants::eta/constants::eta_bar);
-			}
-			else
-			{
-				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) - 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-				rho *= sqrt(constants::eta_bar/constants::eta);
-			}
-			
-			if(rho >= 1.0)
-			{
-				s_site.at(coords.at(1)) = 1;
-				s_site.at(coords.at(2)) = 1;
-	
-				//is this true?!?
-				plaq_occ.at(coords.at(0)) += delta; //
-	
-				detM = detM_prime; // store the fermion determinant
-	
-				//change the loop configuration
-				k_link[coords.at(0)][1] = 0;
-				k_link[coords.at(1)][0] = 0;
-				k_link[coords.at(3)][1] = 0;
-				k_link[coords.at(0)][0] = delta; //we have to delete this link
-			}
-			else if(uniform_distribution(generator) < rho)
-			{
-				s_site.at(coords.at(1)) = 1;
-				s_site.at(coords.at(2)) = 1;
-	
-				plaq_occ.at(coords.at(0)) += delta; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
-	
-				detM = detM_prime; // store the fermion determinant
-	
-				//change the loop configuration
-				k_link[coords.at(0)][1] = 0;
-				k_link[coords.at(1)][0] = 0;
-				k_link[coords.at(3)][1] = 0;
-				k_link[coords.at(0)][0] = delta; //activate this link
-			}
-		}
+		delta_p = delta;
+		coords_tmp.at(0) = coords.at(1);
+		coords_tmp.at(1) = coords.at(2);
+		//#######################################################
+		s_site_prime.at(coords_tmp.at(0)) = 1;
+		s_site_prime.at(coords_tmp.at(1)) = 1;	
+		k_link_prime.at(0) = 0; //for coords.at(0) in dir 1
+		k_link_prime.at(1) = 0;
+		k_link_prime.at(2) = 0;
+		k_link_prime.at(3) = delta;
 	}
-	else if(k_link[coords.at(0)][1] == 0)//no loop in spatial direction
+	else if(k_link[coords.at(0)][1] == 0)//loop in spatial dierction
 	{
 		delta = k_link[coords.at(3)][1];
-		s_site_prime.at(coords.at(2)) = 1;
-		s_site_prime.at(coords.at(3)) = 1;
-		
-		//fill the fermion matrix
-		calc_M_array(neib, sig_link, s_site_prime, M_prime);
-
-		//calculate the log of the determinant
-		detM_prime = det(constants::V, M_prime);
-
-		if(detM_prime != 0.0) //catch the case detM = 0
-		{
-			rho *= 2.0*2.0;
-			rho *= detM_prime/detM;
-		
-			if(delta == 1)
-			{
-				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) - 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-				rho *= sqrt(constants::eta_bar/constants::eta);
-			}
-			else
-			{
-				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-				rho *= sqrt(constants::eta/constants::eta_bar);
-			}
-			
-			if(rho >= 1.0)
-			{
-				s_site.at(coords.at(2)) = 1;
-				s_site.at(coords.at(3)) = 1;
-	
-				//is this true?!?
-				plaq_occ.at(coords.at(0)) -= delta; //
-	
-				detM = detM_prime; // store the fermion determinant
-	
-				//change the loop configuration
-				k_link[coords.at(0)][1] = delta;
-				k_link[coords.at(1)][0] = 0;
-				k_link[coords.at(3)][1] = 0;
-				k_link[coords.at(0)][0] = 0; //we have to delete this link
-			}
-			else if(uniform_distribution(generator) < rho)
-			{
-				s_site.at(coords.at(2)) = 1;
-				s_site.at(coords.at(3)) = 1;
-	
-				plaq_occ.at(coords.at(0)) -= delta; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
-	
-				detM = detM_prime; // store the fermion determinant
-	
-				//change the loop configuration
-				k_link[coords.at(0)][1] = delta;
-				k_link[coords.at(1)][0] = 0;
-				k_link[coords.at(3)][1] = 0;
-				k_link[coords.at(0)][0] = 0; //we have to delete this link
-			}
-			
-		}
+		delta_p = -delta;
+		coords_tmp.at(0) = coords.at(2);
+		coords_tmp.at(1) = coords.at(3);
+		//#######################################################
+		s_site_prime.at(coords_tmp.at(0)) = 1;
+		s_site_prime.at(coords_tmp.at(1)) = 1;
+		k_link_prime.at(0) = delta;
+		k_link_prime.at(1) = 0;
+		k_link_prime.at(2) = 0;
+		k_link_prime.at(3) = 0;
 	}
-	else if(k_link[coords.at(3)][1] == 0)//no loop in spatial direction
+	else if(k_link[coords.at(3)][1] == 0) //loop in spatial direction
 	{
 		delta = k_link[coords.at(0)][1];
-		s_site_prime.at(coords.at(0)) = 1;
-		s_site_prime.at(coords.at(1)) = 1;
-		
-		//fill the fermion matrix
-		calc_M_array(neib, sig_link, s_site_prime, M_prime);
-
-		//calculate the log of the determinant
-		detM_prime = det(constants::V, M_prime);
-
-		if(detM_prime != 0.0) //catch the case detM = 0
-		{
-			rho *= 2.0*2.0;
-			rho *= detM_prime/detM;
-		
-			if(delta == 1)
-			{
-				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-				rho *= sqrt(constants::eta/constants::eta_bar);
-			}
-			else
-			{
-				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) - 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-				rho *= sqrt(constants::eta_bar/constants::eta);
-			}
-			
-			if(rho >= 1.0)
-			{
-				s_site.at(coords.at(0)) = 1;
-				s_site.at(coords.at(1)) = 1;
-	
-				//is this true?!?
-				plaq_occ.at(coords.at(0)) += delta; //
-	
-				detM = detM_prime; // store the fermion determinant
-	
-				//change the loop configuration
-				k_link[coords.at(0)][1] = 0;
-				k_link[coords.at(1)][0] = 0;
-				k_link[coords.at(3)][1] = delta;
-				k_link[coords.at(0)][0] = 0; //we have to delete this link
-			}
-			else if(uniform_distribution(generator) < rho)
-			{
-				s_site.at(coords.at(0)) = 1;
-				s_site.at(coords.at(1)) = 1;
-	
-				plaq_occ.at(coords.at(0)) += delta; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
-	
-				detM = detM_prime; // store the fermion determinant
-	
-				//change the loop configuration
-				k_link[coords.at(0)][1] = 0;
-				k_link[coords.at(1)][0] = 0;
-				k_link[coords.at(3)][1] = delta;
-				k_link[coords.at(0)][0] = 0; //we have to delete this link
-			}
-			
-		}
+		delta_p = delta;
+		coords_tmp.at(0) = coords.at(0);
+		coords_tmp.at(1) = coords.at(1);
+		//#######################################################
+		s_site_prime.at(coords_tmp.at(0)) = 1;
+		s_site_prime.at(coords_tmp.at(1)) = 1;
+		k_link_prime.at(0) = 0;
+		k_link_prime.at(1) = 0;
+		k_link_prime.at(2) = delta;
+		k_link_prime.at(3) = 0;
 	}
-	else if(k_link[coords.at(1)][0] == 0)//no loop in temporal direction
+	else if(k_link[coords.at(1)][0] == 0)//loop in time direction//loop in temporal direction
 	{
 		delta = k_link[coords.at(0)][0];
-		s_site_prime.at(coords.at(0)) = 1;
-		s_site_prime.at(coords.at(3)) = 1;
+		delta_p = -delta;
+		coords_tmp.at(0) = coords.at(0);
+		coords_tmp.at(1) = coords.at(3);
+		//#######################################################
+		s_site_prime.at(coords_tmp.at(0)) = 1;
+		s_site_prime.at(coords_tmp.at(1)) = 1;
+		k_link_prime.at(0) = 0;
+		k_link_prime.at(1) = delta;
+		k_link_prime.at(2) = 0;
+		k_link_prime.at(3) = 0;
 		
-		//fill the fermion matrix
-		calc_M_array(neib, sig_link, s_site_prime, M_prime);
-
-		//calculate the log of the determinant
-		detM_prime = det(constants::V, M_prime);
-
-		if( detM_prime != 0.0 ) //catch the case detM = 0
-		{
-			rho *= 2.0*2.0;
-			rho *= detM_prime/detM;
-		
-			if(delta == 1)
-			{
-				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) - 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-				rho *= sqrt(constants::eta_bar/constants::eta);
-			}
-			else
-			{
-				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-				rho *= sqrt(constants::eta/constants::eta_bar);
-			}
-			
-			
-			if(rho >= 0.0)
-			{
-				s_site.at(coords.at(0)) = 1;
-				s_site.at(coords.at(3)) = 1;
-	
-				//is this true?!?
-				plaq_occ.at(coords.at(0)) -= delta; //
-	
-				detM = detM_prime; // store the fermion determinant
-	
-				//change the loop configuration
-				k_link[coords.at(0)][1] = 0;
-				k_link[coords.at(1)][0] = delta;
-				k_link[coords.at(3)][1] = 0;
-				k_link[coords.at(0)][0] = 0; //we have to delete this link
-			}
-			else if(uniform_distribution(generator) < rho)
-			{
-				s_site.at(coords.at(0)) = 1;
-				s_site.at(coords.at(3)) = 1;
-	
-				plaq_occ.at(coords.at(0)) -= delta; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
-	
-				detM = detM_prime; // store the fermion determinant
-	
-				//change the loop configuration
-				k_link[coords.at(0)][1] = 0;
-				k_link[coords.at(1)][0] = delta;
-				k_link[coords.at(3)][1] = 0;
-				k_link[coords.at(0)][0] = 0; //we have to delete this link
-			}
-			
-		}
 	}
+
+	//fill the fermion matrix
+	calc_M_array(neib, sig_link, s_site_prime, M_prime);
+
+	//calculate the log of the determinant
+	detM_prime = det(constants::V, M_prime);
+
+	if(detM_prime > 0.0) //catch the case detM = 0
+	{
+	 	rho *= detM_prime/detM;
+		rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + delta_p))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+		if(delta_p == 1) rho *= sqrt(constants::eta/constants::eta_bar);
+			else					 rho /= sqrt(constants::eta/constants::eta_bar);
 	
+		if(rho >= 1.0)
+				{
+					s_site.at(coords_tmp.at(0)) = 1;
+					s_site.at(coords_tmp.at(1)) = 1;
+	
+					plaq_occ.at(coords.at(0)) += delta_p; //
+	
+					detM = detM_prime; // store the fermion determinant
+	
+					//change the loop configuration
+					k_link[coords.at(0)][1] = k_link_prime.at(0);
+					k_link[coords.at(1)][0] = k_link_prime.at(1);
+					k_link[coords.at(3)][1] = k_link_prime.at(2);
+					k_link[coords.at(0)][0] = k_link_prime.at(3);
+				}
+				else if(uniform_distribution(generator) < rho)
+				{
+					s_site.at(coords_tmp.at(0)) = 1;
+					s_site.at(coords_tmp.at(1)) = 1;
+	
+					plaq_occ.at(coords.at(0)) += delta_p; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
+	
+					detM = detM_prime; // store the fermion determinant
+	
+					//change the loop configuration
+					k_link[coords.at(0)][1] = k_link_prime.at(0);
+					k_link[coords.at(1)][0] = k_link_prime.at(1);
+					k_link[coords.at(3)][1] = k_link_prime.at(2);
+					k_link[coords.at(0)][0] = k_link_prime.at(3);
+				}
+		}
 }
+
+//void loop_col_update(const int neib[][4], const vector<int>& coords, const vector<vector<int>>& sig_link, const vector<double>& I_bessel, double& detM, vector<int>& s_site, vector<int>& plaq_occ, vector<vector<int>>& k_link)
+//{
+//	std::uniform_real_distribution<double> uniform_distribution(0.0,1.0);
+//	vector<int> s_site_prime = s_site;
+//	int delta;
+//	vector<double> M_prime (constants::V*constants::V, 0.0);
+//	double detM_prime = 0.0;
+//	double rho = 1.0;
+//	//int delta_L = -2;
+//	
+//	if(k_link[coords.at(0)][0] == 0)//no loop in time direction 
+//	{
+//		delta = k_link[coords.at(1)][0];
+//		s_site_prime.at(coords.at(1)) = 1;
+//		s_site_prime.at(coords.at(2)) = 1;
+//		
+//		//fill the fermion matrix
+//		calc_M_array(neib, sig_link, s_site_prime, M_prime);
+
+//		//calculate the log of the determinant
+//		detM_prime = det(constants::V, M_prime);
+
+//		if(detM_prime != 0.0) //catch the case detM = 0
+//		{
+//			rho *= 2.0*2.0;
+//			rho *= detM_prime/detM;
+//		
+//			if(delta == 1)
+//			{
+//				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+//				rho *= sqrt(constants::eta/constants::eta_bar);
+//			}
+//			else
+//			{
+//				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) - 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+//				rho *= sqrt(constants::eta_bar/constants::eta);
+//			}
+//			
+//			if(rho >= 1.0)
+//			{
+//				s_site.at(coords.at(1)) = 1;
+//				s_site.at(coords.at(2)) = 1;
+//	
+//				//is this true?!?
+//				plaq_occ.at(coords.at(0)) += delta; //
+//	
+//				detM = detM_prime; // store the fermion determinant
+//	
+//				//change the loop configuration
+//				k_link[coords.at(0)][1] = 0;
+//				k_link[coords.at(1)][0] = 0;
+//				k_link[coords.at(3)][1] = 0;
+//				k_link[coords.at(0)][0] = delta; //we have to delete this link
+//			}
+//			else if(uniform_distribution(generator) < rho)
+//			{
+//				s_site.at(coords.at(1)) = 1;
+//				s_site.at(coords.at(2)) = 1;
+//	
+//				plaq_occ.at(coords.at(0)) += delta; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
+//	
+//				detM = detM_prime; // store the fermion determinant
+//	
+//				//change the loop configuration
+//				k_link[coords.at(0)][1] = 0;
+//				k_link[coords.at(1)][0] = 0;
+//				k_link[coords.at(3)][1] = 0;
+//				k_link[coords.at(0)][0] = delta; //activate this link
+//			}
+//		}
+//	}
+//	else if(k_link[coords.at(0)][1] == 0)//no loop in spatial direction
+//	{
+//		delta = k_link[coords.at(3)][1];
+//		s_site_prime.at(coords.at(2)) = 1;
+//		s_site_prime.at(coords.at(3)) = 1;
+//		
+//		//fill the fermion matrix
+//		calc_M_array(neib, sig_link, s_site_prime, M_prime);
+
+//		//calculate the log of the determinant
+//		detM_prime = det(constants::V, M_prime);
+
+//		if(detM_prime != 0.0) //catch the case detM = 0
+//		{
+//			rho *= 2.0*2.0;
+//			rho *= detM_prime/detM;
+//		
+//			if(delta == 1)
+//			{
+//				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) - 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+//				rho *= sqrt(constants::eta_bar/constants::eta);
+//			}
+//			else
+//			{
+//				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+//				rho *= sqrt(constants::eta/constants::eta_bar);
+//			}
+//			
+//			if(rho >= 1.0)
+//			{
+//				s_site.at(coords.at(2)) = 1;
+//				s_site.at(coords.at(3)) = 1;
+//	
+//				//is this true?!?
+//				plaq_occ.at(coords.at(0)) -= delta; //
+//	
+//				detM = detM_prime; // store the fermion determinant
+//	
+//				//change the loop configuration
+//				k_link[coords.at(0)][1] = delta;
+//				k_link[coords.at(1)][0] = 0;
+//				k_link[coords.at(3)][1] = 0;
+//				k_link[coords.at(0)][0] = 0; //we have to delete this link
+//			}
+//			else if(uniform_distribution(generator) < rho)
+//			{
+//				s_site.at(coords.at(2)) = 1;
+//				s_site.at(coords.at(3)) = 1;
+//	
+//				plaq_occ.at(coords.at(0)) -= delta; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
+//	
+//				detM = detM_prime; // store the fermion determinant
+//	
+//				//change the loop configuration
+//				k_link[coords.at(0)][1] = delta;
+//				k_link[coords.at(1)][0] = 0;
+//				k_link[coords.at(3)][1] = 0;
+//				k_link[coords.at(0)][0] = 0; //we have to delete this link
+//			}
+//			
+//		}
+//	}
+//	else if(k_link[coords.at(3)][1] == 0)//no loop in spatial direction
+//	{
+//		delta = k_link[coords.at(0)][1];
+//		s_site_prime.at(coords.at(0)) = 1;
+//		s_site_prime.at(coords.at(1)) = 1;
+//		
+//		//fill the fermion matrix
+//		calc_M_array(neib, sig_link, s_site_prime, M_prime);
+
+//		//calculate the log of the determinant
+//		detM_prime = det(constants::V, M_prime);
+
+//		if(detM_prime != 0.0) //catch the case detM = 0
+//		{
+//			rho *= 2.0*2.0;
+//			rho *= detM_prime/detM;
+//		
+//			if(delta == 1)
+//			{
+//				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+//				rho *= sqrt(constants::eta/constants::eta_bar);
+//			}
+//			else
+//			{
+//				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) - 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+//				rho *= sqrt(constants::eta_bar/constants::eta);
+//			}
+//			
+//			if(rho >= 1.0)
+//			{
+//				s_site.at(coords.at(0)) = 1;
+//				s_site.at(coords.at(1)) = 1;
+//	
+//				//is this true?!?
+//				plaq_occ.at(coords.at(0)) += delta; //
+//	
+//				detM = detM_prime; // store the fermion determinant
+//	
+//				//change the loop configuration
+//				k_link[coords.at(0)][1] = 0;
+//				k_link[coords.at(1)][0] = 0;
+//				k_link[coords.at(3)][1] = delta;
+//				k_link[coords.at(0)][0] = 0; //we have to delete this link
+//			}
+//			else if(uniform_distribution(generator) < rho)
+//			{
+//				s_site.at(coords.at(0)) = 1;
+//				s_site.at(coords.at(1)) = 1;
+//	
+//				plaq_occ.at(coords.at(0)) += delta; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
+//	
+//				detM = detM_prime; // store the fermion determinant
+//	
+//				//change the loop configuration
+//				k_link[coords.at(0)][1] = 0;
+//				k_link[coords.at(1)][0] = 0;
+//				k_link[coords.at(3)][1] = delta;
+//				k_link[coords.at(0)][0] = 0; //we have to delete this link
+//			}
+//			
+//		}
+//	}
+//	else if(k_link[coords.at(1)][0] == 0)//no loop in temporal direction
+//	{
+//		delta = k_link[coords.at(0)][0];
+//		s_site_prime.at(coords.at(0)) = 1;
+//		s_site_prime.at(coords.at(3)) = 1;
+//		
+//		//fill the fermion matrix
+//		calc_M_array(neib, sig_link, s_site_prime, M_prime);
+
+//		//calculate the log of the determinant
+//		detM_prime = det(constants::V, M_prime);
+
+//		if( detM_prime != 0.0 ) //catch the case detM = 0
+//		{
+//			rho *= 2.0*2.0;
+//			rho *= detM_prime/detM;
+//		
+//			if(delta == 1)
+//			{
+//				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) - 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+//				rho *= sqrt(constants::eta_bar/constants::eta);
+//			}
+//			else
+//			{
+//				rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+//				rho *= sqrt(constants::eta/constants::eta_bar);
+//			}
+//			
+//			
+//			if(rho >= 0.0)
+//			{
+//				s_site.at(coords.at(0)) = 1;
+//				s_site.at(coords.at(3)) = 1;
+//	
+//				//is this true?!?
+//				plaq_occ.at(coords.at(0)) -= delta; //
+//	
+//				detM = detM_prime; // store the fermion determinant
+//	
+//				//change the loop configuration
+//				k_link[coords.at(0)][1] = 0;
+//				k_link[coords.at(1)][0] = delta;
+//				k_link[coords.at(3)][1] = 0;
+//				k_link[coords.at(0)][0] = 0; //we have to delete this link
+//			}
+//			else if(uniform_distribution(generator) < rho)
+//			{
+//				s_site.at(coords.at(0)) = 1;
+//				s_site.at(coords.at(3)) = 1;
+//	
+//				plaq_occ.at(coords.at(0)) -= delta; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
+//	
+//				detM = detM_prime; // store the fermion determinant
+//	
+//				//change the loop configuration
+//				k_link[coords.at(0)][1] = 0;
+//				k_link[coords.at(1)][0] = delta;
+//				k_link[coords.at(3)][1] = 0;
+//				k_link[coords.at(0)][0] = 0; //we have to delete this link
+//			}
+//			
+//		}
+//	}
+//	
+//}
 
 
 //join two loops/ cut a loop by rotation of loop fragments
 void loop_rot_update(const vector<int>& coords, const vector<double>& I_bessel, vector<int>& plaq_occ, vector<vector<int>>& k_link)
 {
 	std::uniform_real_distribution<double> uniform_distribution(0.0,1.0);
-	int delta;
+	int delta, delta_p;
 	double rho = 1.0;
 	
 	if(k_link[coords.at(0)][1] != 0)
 	{
 		delta = k_link[coords.at(0)][1];
-		if(delta == 1)
-		{
-			rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-			rho *= sqrt(constants::eta_bar/constants::eta);
-		}
-		else
-		{
-			rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) - 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-			rho *= sqrt(constants::eta/constants::eta_bar);
-		}
+		delta_p = delta;
+		
+		rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + delta_p))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+		if(delta_p == 1) rho *= sqrt(constants::eta/constants::eta_bar);
+			else					 rho /= sqrt(constants::eta/constants::eta_bar);
 		
 		if(rho >= 1.0)
-			{
-				plaq_occ.at(coords.at(0)) += delta; //
-	
-				//change the loop configuration
-				k_link[coords.at(0)][1] = 0;
-				k_link[coords.at(1)][0] = -delta;
-				k_link[coords.at(3)][1] = 0;
-				k_link[coords.at(0)][0] = delta; //we have to delete this link
-			}
-			else if(uniform_distribution(generator) < rho)
-			{
-				plaq_occ.at(coords.at(0)) += delta; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
-	
-				//change the loop configuration
-				k_link[coords.at(0)][1] = 0;
-				k_link[coords.at(1)][0] = -delta;
-				k_link[coords.at(3)][1] = 0;
-				k_link[coords.at(0)][0] = delta; //we have to delete this link
-			}
+		{
+			plaq_occ.at(coords.at(0)) += delta_p;
+
+			//change the loop configuration
+			k_link[coords.at(0)][1] = 0;
+			k_link[coords.at(1)][0] = -delta;
+			k_link[coords.at(3)][1] = 0;
+			k_link[coords.at(0)][0] = delta;
+		}
+		else if(uniform_distribution(generator) < rho)
+		{
+			plaq_occ.at(coords.at(0)) += delta_p; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
+
+			//change the loop configuration
+			k_link[coords.at(0)][1] = 0;
+			k_link[coords.at(1)][0] = -delta;
+			k_link[coords.at(3)][1] = 0;
+			k_link[coords.at(0)][0] = delta;
+		}
 	}
 	else
 	{
 		delta = k_link[coords.at(0)][0];
-		if(delta == 1)
-		{
-			rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) - 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-			rho *= sqrt(constants::eta_bar/constants::eta);
-		}
-		else
-		{
-			rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + 1))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
-			rho *= sqrt(constants::eta/constants::eta_bar);
-		}
+		delta_p = -delta;
+		
+		rho *= I_bessel.at(abs(plaq_occ.at(coords.at(0)) + delta_p))/I_bessel.at(abs(plaq_occ.at(coords.at(0))));
+		if(delta_p == 1) rho *= sqrt(constants::eta/constants::eta_bar);
+			else					 rho /= sqrt(constants::eta/constants::eta_bar);
 		
 		if(rho >= 0.0)
 		{
-			plaq_occ.at(coords.at(0)) -= delta; //
+			plaq_occ.at(coords.at(0)) += delta_p; //
 
 			//change the loop configuration
 			k_link[coords.at(0)][1] = delta;
@@ -828,7 +1043,7 @@ void loop_rot_update(const vector<int>& coords, const vector<double>& I_bessel, 
 		}
 		else if(uniform_distribution(generator) < rho)
 		{
-			plaq_occ.at(coords.at(0)) -= delta; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
+			plaq_occ.at(coords.at(0)) += delta_p; //if delta introduces clock-wise flux, plaquette occupation must compensate that => anti-clock-wise and vice versa
 
 			//change the loop configuration
 			k_link[coords.at(0)][1] = delta;

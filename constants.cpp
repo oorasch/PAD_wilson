@@ -20,7 +20,7 @@ namespace constants
     extern const double theta(0.0);
     //extern double theta_bar(theta/2.0/pi);
     extern double theta_bar(0.0);
-    extern double beta(0.1);
+    extern double beta(3.0);
     extern double eta(0.0);
     extern double eta_bar(0.0);
     

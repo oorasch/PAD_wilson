@@ -6,6 +6,29 @@
 
 using namespace std;
 
+void site_occupation_check(const int neib[][4], const vector<int>& s_site, const vector<vector<int>>& k_link)
+{
+	for(int i = 0; i < constants::V; i++)
+	{
+		int link_check = abs(k_link[i][1]) + abs(k_link[neib[i][2]][0]) + abs(k_link[neib[i][3]][1]) + abs(k_link[i][0]);
+		
+		if(s_site.at(i) == 0)
+		{
+			if(link_check != 2)
+			{
+				cout << i << " : Site occupation wrong!!!!" << endl;
+			}
+		}
+		else
+		{
+			if(link_check != 0)
+			{
+				cout << i << " : Site occupation wrong!!!!" << endl;
+			}
+		}
+	}
+}
+
 void pauli_check(const int neib[][4], const vector<vector<int>>& k_link)
 {
 	for(int i = 0; i < constants::V; i++)

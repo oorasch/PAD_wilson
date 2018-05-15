@@ -46,12 +46,14 @@ int main(){
 	
 	//cout << detM << endl;
 	
-	ofstream outfile1, outfile2;
-	outfile1.open("plaq_occ_beta_full3.dat");
-	outfile2.open("topo_chrg_beta_full3.dat");
+	ofstream outfile1, outfile2, outfile3;
+	string version("_full1_newexp");
+	outfile1.open("plaq_occ_beta"+version+".dat");
+	outfile2.open("topo_chrg_beta"+version+".dat");
+	outfile3.open("avg_plaq_occ_beta"+version+".dat");
 		
-	//for(double theta_bar = -1.5; theta_bar <= 1.6; theta_bar += 0.05)
-	for(double beta = 0.1; beta <= 3.1; beta += 0.1)
+//	for(double theta_bar = -1.5; theta_bar <= 1.6; theta_bar += 0.05)
+	for(double beta = 0.1; beta <= 2.2; beta += 0.4)
 	{
 		//constants::theta_bar = theta_bar;
 		constants::beta = beta;
@@ -73,9 +75,10 @@ int main(){
 			//cout << constants::beta << " " << constants::eta << " " << meas_plaq(plaq_occ, I_bessel) << endl;
 			outfile1 << meas_plaq(plaq_occ, I_bessel) << endl;
 			outfile2 << meas_topo_chrg(plaq_occ, I_bessel) << endl;
+			outfile3 << meas_plaq_occ(plaq_occ, I_bessel) << endl;
 		}
 	}
-	outfile1.close(); outfile2.close();
+	outfile1.close(); outfile2.close(); outfile3.close();
 
 //	for(int i=0; i<constants::Ns; i++)
 //	{
@@ -88,6 +91,7 @@ int main(){
 //		cout << endl;
 //	}
 	
+	site_occupation_check(neib, s_site, k_link);
 	pauli_check(neib, k_link);
 	flux_check(neib, k_link);
 	plaquette_check(neib, k_link, plaq_occ);
